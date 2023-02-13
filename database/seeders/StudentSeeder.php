@@ -24,7 +24,6 @@ class StudentSeeder extends Seeder
                 'name' => $faker->unique()->name,
                 'roll_no' => $faker->randomNumber(4),
                 'fees' => $faker->unique()->randomNumber(4),
-
             ]);
         }
     }
