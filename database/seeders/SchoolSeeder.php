@@ -20,9 +20,8 @@ class SchoolSeeder extends Seeder
             DB::table('schools')->insert([
                 'name' => $faker->name(),
                 'website' => $faker->city(),
-                'strength' => $faker->randomDigit(),
+                'strength' => $faker->numberBetween(1000, 5000),
                 'phone' => $faker->unique()->phoneNumber,
-                'address_id' => $faker->unique()->numberBetween(1,5),
             ]);
         }
     }

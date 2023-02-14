@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\school\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -19,11 +20,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register',[UserController::class,'register']);
 Route::post('/login',[UserController::class,'login']);
 
-
+Route::get('schools',[SchoolController::class,'index']);
 //protected routes
 Route::middleware(['auth:sanctum'])->group(function (){
-    Route::resource('/students',StudentController::class);
-    Route::get('/students/search/{city}',[StudentController::class,'search']);
+
     Route::post('/logout',[UserController::class,'logout']);
 });
 

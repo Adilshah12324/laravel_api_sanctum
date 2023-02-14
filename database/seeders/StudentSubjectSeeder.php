@@ -7,7 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class StudentSeeder extends Seeder
+class StudentSubjectSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,12 +17,10 @@ class StudentSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        foreach (range(1,5) as $value) {
-            DB::table('students')->insert([
-                'school_id' => $faker->numberBetween(1,5),
-                'name' => $faker->unique()->name,
-                'roll_no' => $faker->randomNumber(4),
-                'fees' => $faker->unique()->randomNumber(4),
+        foreach (range(1,5) as $value){
+            DB::table('student_subject')->insert([
+                'student_id' => $faker->numberBetween(1,5),
+                'subject_id' => $faker->numberBetween(1,5),
             ]);
         }
     }
