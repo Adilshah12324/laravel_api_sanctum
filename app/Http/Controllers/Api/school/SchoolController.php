@@ -12,7 +12,7 @@ use App\Models\Teacher;
 class SchoolController extends Controller
 {
     public function index(){
-        $school = Student::with('subjects')->get();
+        $school = School::with('teachers','students.subjects','students.addresses')->get();
         return response()->json([
             'tecaher' => $school,
         ]);

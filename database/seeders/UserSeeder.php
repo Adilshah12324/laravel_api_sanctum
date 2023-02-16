@@ -5,8 +5,10 @@ namespace Database\Seeders;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class SchoolSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,11 +19,10 @@ class SchoolSeeder extends Seeder
     {
         $faker = Faker::create();
         foreach (range(1,5) as $value) {
-            DB::table('schools')->insert([
-                'user_id' => $faker->numberBetween(1,5),
-                'website' => $faker->domainName(),
-                'strength' => $faker->numberBetween(1000, 5000),
-                'phone' => $faker->unique()->phoneNumber,
+            DB::table('users')->insert([
+                'name' => $faker->unique()->name(),
+                'email' => $faker->unique()->email(),
+                'password' => 'admin',
             ]);
         }
     }

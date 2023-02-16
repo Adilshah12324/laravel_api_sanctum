@@ -14,4 +14,11 @@ class School extends Model
     use HasManyTeachers;
     use HasManyAddresses;
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'name',
+        'website',
+        'strength',
+        'phone'
+    ];
 }
