@@ -12,21 +12,21 @@ class UserController extends Controller
 {
     public function register(Request $request, SchoolRegisterRequest $schoolRegisterRequest){
         $request->validate([
-            'name'      =>  'required',
-            'email'     =>  'required|email',
-            'password'  =>  'required|confirmed',
-            'website'  =>  'required',
+            'name'    =>  'required',
+            'email'   =>  'required|email',
+            'password'=>  'required|confirmed',
+            'website' =>  'required',
         ]);
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password)
         ]);
         $school = School::create([
-            'user_id'=> $user->id,  
+            'user_id' => $user->id,  
             'website' => $schoolRegisterRequest->website, 
-            'strength' => $schoolRegisterRequest->strength, 
-            'phone' => $schoolRegisterRequest->phone, 
+            'strength'=> $schoolRegisterRequest->strength, 
+            'phone'   => $schoolRegisterRequest->phone, 
         ]);
         $school->save();
         $token = $user->createToken('myToken')->plainTextToken;

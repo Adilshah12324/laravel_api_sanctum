@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\school\SchoolController;
-use App\Http\Controllers\StudentController;
+use App\Http\Controllers\Api\student\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +25,7 @@ Route::get('schools',[SchoolController::class,'index']);
 Route::middleware(['auth:sanctum'])->group(function (){
 
     Route::post('/logout',[UserController::class,'logout']);
+    Route::resource('students',StudentController::class);
 });
 
 
