@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\student;
 
-use App\Http\Controllers\Controller;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\StudentCollection;
 
 class StudentController extends Controller
 {
@@ -14,7 +16,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return 'adil';
+        $students = Student::all();
+        return new StudentCollection($students);
     }
 
     /**
