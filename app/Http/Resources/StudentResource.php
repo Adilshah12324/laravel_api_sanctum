@@ -4,6 +4,16 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property mixed $id
+ * @property mixed $school_id
+ * @property mixed $name
+ * @property mixed $roll_no
+ * @property mixed $fees
+ * @property mixed $teachers
+ * @property mixed $subjects
+ * @property mixed $school
+ */
 class StudentResource extends JsonResource
 {
     public static $wrap = 'students';
@@ -21,6 +31,8 @@ class StudentResource extends JsonResource
             'name'      => $this->name,
             'roll_no'   => $this->roll_no,
             'fees'      => $this->fees,
+            'subjects'  => $this->when(request()->subjects, $this->subjects),
+            'teachers'  => $this->when(request()->teachers, $this->teachers),
         ];
     }
 }

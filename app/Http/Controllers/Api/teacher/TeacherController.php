@@ -12,12 +12,21 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return TeacherCollection
      */
     public function index()
     {
-        $teachers = Teacher::all();
-        return new TeacherCollection($teachers);
+        $relationships = [];
+            falseToNull(!request()->school)
+            ?? array_push($relationships, 'school');
+            falseToNull(!request()->teachers)
+            ?? array_push($relationships, 'teachers');
+            falseToNull(!request()->subjects)
+            ?? array_push($relationships, 'subjects');
+
+        $subjects = Teacher::with($relationships)->get();
+
+        return new TeacherCollection($subjects);
     }
 
     /**

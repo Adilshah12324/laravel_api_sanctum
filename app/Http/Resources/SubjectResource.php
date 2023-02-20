@@ -4,6 +4,14 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property mixed $id
+ * @property mixed $title
+ * @property mixed $code
+ * @property mixed $school
+ * @property mixed $teachers
+ * @property mixed $students
+ */
 class SubjectResource extends JsonResource
 {
     public static $wrap = 'subjects';
@@ -16,9 +24,12 @@ class SubjectResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'    => $this->id,
-            'title' => $this->title,
-            'code'  => $this->code,
+            'id'      => $this->id,
+            'title'   => $this->title,
+            'code'    => $this->code,
+            'school'  => $this->when(request()->school, $this->school),
+            'teachers'=> $this->when(request()->teachers, $this->teachers),
+            'students'=> $this->when(request()->students, $this->students),
         ];
     }
 }

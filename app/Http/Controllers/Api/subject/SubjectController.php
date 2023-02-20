@@ -12,13 +12,22 @@ class SubjectController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return SubjectCollection
      */
     public function index()
     {
-        $subjects = Subject::all();
+        $relationships = [];
+        falseToNull(!request()->students)
+            ?? array_push($relationships, 'students');
+        falseToNull(!request()->teachers)
+            ?? array_push($relationships, 'teachers');
+            falseToNull(!request()->school)
+            ?? array_push($relationships, 'teachers.school');
+
+        $subjects = Subject::with($relationships)->get();
+
         return new SubjectCollection($subjects);
-        
+
     }
 
     /**

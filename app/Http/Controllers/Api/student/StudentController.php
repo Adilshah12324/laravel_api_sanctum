@@ -12,11 +12,18 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return StudentCollection
      */
     public function index()
     {
-        $students = Student::all();
+        $relationships = [];
+        falseToNull(!request()->teachers)
+            ?? array_push($relationships, 'teachers');
+        falseToNull(!request()->subjects)
+            ?? array_push($relationships, 'subjects');
+        falseToNull(!request()->school)
+            ?? array_push($relationships, 'school');
+        $students = Student::with($relationships)->get();
         return new StudentCollection($students);
     }
 
