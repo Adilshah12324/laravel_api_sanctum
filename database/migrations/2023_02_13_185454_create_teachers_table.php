@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('address_id');
             $table->unsignedBigInteger('school_id');
             $table->string('name');
             $table->string('phone')->nullable();
@@ -25,7 +24,6 @@ return new class extends Migration
             $table->string('specialization');
             $table->string('experience');
             $table->timestamps();
-            $table->foreign('address_id')->references('id')->on('addresses');
             $table->foreign('school_id')->references('id')->on('schools');
         });
     }
