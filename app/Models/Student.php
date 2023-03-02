@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    use HasManyAddresses;
     use belongsToSchool;
     use belongsToManyTeachers;
     use belongsToManySubjects;

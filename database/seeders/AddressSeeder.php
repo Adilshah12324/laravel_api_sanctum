@@ -20,8 +20,6 @@ class AddressSeeder extends Seeder
         $faker = Faker::create();
         foreach (range(1,5) as $value) {
             DB::table('addresses')->insert([
-                'school_id' => $faker->unique()->numberBetween(1,5),
-                'student_id' => $faker->numberBetween(1,5),
                 'street' => $faker->streetAddress,
                 'city' => $faker->city,
                 'country' => $faker->country,

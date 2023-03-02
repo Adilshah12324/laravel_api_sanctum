@@ -15,13 +15,9 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('school_id');
-            $table->unsignedBigInteger('student_id');
             $table->string('street');
             $table->string('city');
             $table->string('country');
-            $table->foreign('school_id')->references('id')->on('schools');
-            $table->foreign('student_id')->references('id')->on('students');
             $table->timestamps();
         });
     }

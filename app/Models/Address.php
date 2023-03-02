@@ -9,8 +9,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-
-    use BelongsToSchool;
-    use BelongsToManyStudents;
     use HasFactory;
 }

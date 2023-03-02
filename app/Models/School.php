@@ -12,7 +12,6 @@ class School extends Model
 {
     use HasManyStudents;
     use HasManyTeachers;
-    use HasManyAddresses;
     use HasFactory;
     protected $fillable = [
         'user_id',
