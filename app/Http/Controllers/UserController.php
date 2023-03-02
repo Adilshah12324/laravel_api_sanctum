@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SchoolRegisterRequest;
 use App\Models\User;
 use App\Models\School;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\SchoolRegisterRequest;
 
 class UserController extends Controller
 {
@@ -23,11 +24,18 @@ class UserController extends Controller
             'password' => Hash::make($request->password)
         ]);
         $school = School::create([
-            'user_id' => $user->id,  
+            'user_id'    => $user->id,   
             'website' => $schoolRegisterRequest->website, 
             'strength'=> $schoolRegisterRequest->strength, 
             'phone'   => $schoolRegisterRequest->phone, 
         ]);
+        $address = Address::create([
+            'school_id' => $school->id,
+            'street' => $request->street,
+            'city' => $request->city,
+            'country' => $request->country,
+        ]);
+        $school->address_id = $address->id;
         $school->save();
         $token = $user->createToken('myToken')->plainTextToken;
 

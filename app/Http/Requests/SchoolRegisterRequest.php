@@ -27,6 +27,9 @@ class SchoolRegisterRequest extends FormRequest
             'website' => ['required'],
             'strength'=> ['required'],
             'phone'   => ['required'],
+            'street'   => ['required'],
+            'city'   => ['required'],
+            'country'   => ['required'],
         ];
     }
 }

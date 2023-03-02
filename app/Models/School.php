@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
 {
+    use HasManyAddresses;
     use HasManyStudents;
     use HasManyTeachers;
     use HasFactory;

@@ -9,5 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
+    use BelongsToSchool;
     use HasFactory;
+
+    protected $fillable = [
+        'school_id',
+        'street',
+        'city',
+        'country',
+    ];
 }

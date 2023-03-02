@@ -16,13 +16,11 @@ return new class extends Migration
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('address_id');
             $table->string('website');
             $table->integer('strength');
             $table->string('phone');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('address_id')->references('id')->on('addresses');
         });
     }
 

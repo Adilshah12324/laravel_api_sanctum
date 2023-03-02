@@ -17,6 +17,7 @@ class SchoolController extends Controller
         falseToNull(request()->addresses)
             ?? array_push($relationships);
         $schools = School::with($relationships)->get();
+        
         return new SchoolCollection($schools);
 
     }
