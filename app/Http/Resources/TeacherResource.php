@@ -42,6 +42,7 @@ class TeacherResource extends JsonResource
             'school'        => $this->when(request()->school, $this->school),
             'students'      => $this->when(request()->students, $this->students),
             'subjects'      => $this->when(request()->subjects, $this->subjects),
+            'address'      => $this->when(request()->address, $this->address),
 
 
         ];

@@ -23,7 +23,8 @@ class StudentController extends Controller
             ?? array_push($relationships, 'subjects');
         falseToNull(!request()->school)
             ?? array_push($relationships, 'school');
-        $students = Student::with($relationships)->get();
+        $students = Student::with('address')->get();
+        
         return new StudentCollection($students);
     }
 

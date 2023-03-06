@@ -33,6 +33,8 @@ class StudentResource extends JsonResource
             'fees'      => $this->fees,
             'subjects'  => $this->when(request()->subjects, $this->subjects),
             'teachers'  => $this->when(request()->teachers, $this->teachers),
+            'school'  => $this->when(request()->school, $this->school),
+            'address'   => $this->when(request()->address, $this->address),
         ];
     }
 }

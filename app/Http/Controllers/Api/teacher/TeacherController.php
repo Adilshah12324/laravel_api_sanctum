@@ -27,9 +27,7 @@ class TeacherController extends Controller
 
         $teachers = Teacher::with($relationships)->get();
 
-        return response()->json($teachers);
-
-        // return new TeacherCollection($subjects);
+        return new TeacherCollection($teachers);
     }
 
     /**
