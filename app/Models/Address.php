@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\Relationships\BelongsToSchool;
-use App\Traits\Relationships\BelongsToManyStudents;
+use App\Traits\Relationships\HasOneSchool;
+use App\Traits\Relationships\HasOneTeacher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    use BelongsToSchool;
+    use HasOneSchool;
+    use HasOneTeacher;
     use HasFactory;
 
     protected $fillable = [

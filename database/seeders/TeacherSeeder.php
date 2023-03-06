@@ -19,6 +19,7 @@ class TeacherSeeder extends Seeder
         foreach (range(1,5) as $value) {
             DB::table('teachers')->insert([
                 'school_id' => $faker->numberBetween(1,5),
+                'address_id' => $faker->numberBetween(1,5),
                 'name' => $faker->unique()->name(),
                 'phone' => $faker->unique()->phoneNumber(),
                 'email' => $faker->unique()->email(),

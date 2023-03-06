@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api\teacher;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\TeacherCollection;
+use App\Models\School;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\TeacherCollection;
 
 class TeacherController extends Controller
 {
@@ -17,16 +18,18 @@ class TeacherController extends Controller
     public function index()
     {
         $relationships = [];
-            falseToNull(!request()->school)
+        falseToNull(!request()->school)
             ?? array_push($relationships, 'school');
-            falseToNull(!request()->teachers)
-            ?? array_push($relationships, 'teachers');
-            falseToNull(!request()->subjects)
+        falseToNull(!request()->teachers)
             ?? array_push($relationships, 'subjects');
+        falseToNull(!request()->address)
+            ?? array_push($relationships, 'address');
 
-        $subjects = Teacher::with($relationships)->get();
+        $teachers = Teacher::with($relationships)->get();
 
-        return new TeacherCollection($subjects);
+        return response()->json($teachers);
+
+        // return new TeacherCollection($subjects);
     }
 
     /**
