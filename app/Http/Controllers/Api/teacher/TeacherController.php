@@ -60,7 +60,8 @@ class TeacherController extends Controller
 
             if ($request->hasFile('profile_image')) {
                 $profileImage = $request->file('profile_image');
-                $profileImagePath = $profileImage->store('teachers/profile', 'public');
+                $filename = time() . '.' . $profileImage->getClientOriginalExtension();
+                $profileImagePath = $profileImage->storeAs('profile/teachers/profile', $filename);
             }
             $teacher = Teacher::create([
                 'school_id'     => $request->input('school_id'),
