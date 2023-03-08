@@ -16,4 +16,17 @@ class Teacher extends Model
     use BelongsToSchool;
     use BelongsToAddress;
     use HasFactory;
+
+    protected $fillable = [
+        'school_id',
+        'address_id',
+        'name',
+        'profile_image',
+        'phone',
+        'email',
+        'age',
+        'qualification',
+        'specialization',
+        'experience',
+    ];
 }

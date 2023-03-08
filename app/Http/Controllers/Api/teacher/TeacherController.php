@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api\teacher;
 
-use App\Models\School;
+use Exception;
+use App\Models\Address;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeacherCollection;
+use App\Http\Requests\StoreTeacherRequest;
 
 class TeacherController extends Controller
 {
@@ -46,9 +49,50 @@ class TeacherController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        return ' store teacher';
+    public function store(StoreTeacherRequest $request)
+    {   
+        DB::beginTransaction();
+        try
+            {     
+            $address = $request->only('street','city','country');
+            $address = Address::create($address);
+            $profileImagePath = null;
+
+            if ($request->hasFile('profile_image')) {
+                $profileImage = $request->file('profile_image');
+                $profileImagePath = $profileImage->store('teachers/profile', 'public');
+            }
+            $teacher = Teacher::create([
+                'school_id'     => $request->input('school_id'),
+                'address_id'    => $address->id,
+                'name'          => $request->input('name'),
+                'profile_image' => $profileImagePath,
+                'phone'         => $request->input('phone'),
+                'email'         => $request->input('email'),
+                'age'           => $request->input('age'),
+                'qualification' => $request->input('qualification'),
+                'specialization'=> $request->input('specialization'),
+                'experience'    => $request->input('experience'),
+            ]);
+            $teacher = [
+                'teacher' => $teacher,
+                'address' => $address
+            ];
+            DB::commit();
+            
+            } catch (Exception $e) {
+                $success = false;
+                $message = 'Failed to create teacher (' . $e->getMessage() . ')!';
+                $status  = 500;
+        }
+
+        return response()->json([
+            'status'      => $success ?? true,
+            'message'     => $message ?? 'Teacher is created Successfully!',
+            'type'        => 'teacher',
+            'teacher' => $teacher ?? null
+        ], $status ?? 201);
+        
     }
 
     /**
