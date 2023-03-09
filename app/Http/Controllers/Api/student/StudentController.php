@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\student;
 use Exception;
 use App\Models\Address;
 use App\Models\Student;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentCollection;
@@ -51,7 +50,7 @@ class StudentController extends Controller
                 'address_id' => $address->id,
                 'name'       => $request->input('name'),
                 'father_name'=> $request->input('father_name'),
-                'dob'       => $request->input('dob'),
+                'dob'        => $request->input('dob'),
                 'roll_no'    => $request->input('roll_no'),
                 'fees'       => $request->input('fees'),
             ]);
@@ -67,10 +66,10 @@ class StudentController extends Controller
             $status  = 500;
         }
         return response()->json([
-            'status'      => $success ?? true,
-            'message'     => $message ?? 'Student created Successfully!',
-            'type'        => 'student',
-            'student' => $student ?? null
+            'status' => $success ?? true,
+            'message'=> $message ?? 'Student created Successfully!',
+            'type'   => 'student',
+            'student'=> $student ?? null
         ], $status ?? 201);
         
     }
@@ -81,9 +80,27 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Student $student)
     {
-        //
+        $relationships = [];
+        falseToNull(!request()->teachers)
+            ?? array_push($relationships, 'teachers');
+        falseToNull(!request()->subjects)
+            ?? array_push($relationships, 'subjects');
+        falseToNull(!request()->school)
+            ?? array_push($relationships, 'school');
+        $student = Student::with($relationships)->find($student->id);
+        
+        if (!$student) {
+            return response()->json([
+                'student'=> 'Student Not Found',
+            ]);
+        }
+        return response()->json([
+            'status' => $success ?? true,
+            'type'   => 'student',
+            'student'=> $student ?? null
+        ], $status ?? 201); 
     }
 
     /**
@@ -104,7 +121,7 @@ class StudentController extends Controller
             $student->update([
                 'name'       => $request->input('name'),
                 'father_name'=> $request->input('father_name'),
-                'dob'       => $request->input('dob'),
+                'dob'        => $request->input('dob'),
                 'roll_no'    => $request->input('roll_no'),
                 'fees'       => $request->input('fees'),
             ]);
@@ -120,10 +137,10 @@ class StudentController extends Controller
             $status  = 500;
         }
         return response()->json([
-            'status'      => $success ?? true,
-            'message'     => $message ?? 'Student Updated Successfully!',
-            'type'        => 'student',
-            'student' => $student ?? null
+            'status' => $success ?? true,
+            'message'=> $message ?? 'Student Updated Successfully!',
+            'type'   => 'student',
+            'student'=> $student ?? null
         ], $status ?? 201);       
     }
 
@@ -138,15 +155,15 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
         if (!$student) {
             return response()->json([
-                'student' => 'Student Not Found',
+                'student'=> 'Student Not Found',
             ]);
         }
         $student->delete();
 
         return response()->json([
-            'status'      => $success ?? true,
-            'message'     => $message ?? 'Student deleted Successfully!',
-            'type'        => 'student',
+            'status' => $success ?? true,
+            'message'=> $message ?? 'Student deleted Successfully!',
+            'type'   => 'student',
         ], $status ?? 201);
 
     }
