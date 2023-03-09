@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StudentCollection;
 use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 
 class StudentController extends Controller
 {
@@ -86,26 +87,44 @@ class StudentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateStudentRequest $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try
+        {
+            $addressUpdate = $request->only('street','city','country');
+            $student = Student::findOrFail($id);
+            $address = $student->address()->update($addressUpdate);
+            $student->update([
+                'name'       => $request->input('name'),
+                'father_name'=> $request->input('father_name'),
+                'dob'       => $request->input('dob'),
+                'roll_no'    => $request->input('roll_no'),
+                'fees'       => $request->input('fees'),
+            ]);
+            $student = [
+                'student'=> $student,
+                'address'=> $address,
+            ];
+            DB::commit();
+
+        } catch (Exception $e) {
+            $success = false;
+            $message = 'Failed to update student (' . $e->getMessage() . ')!';
+            $status  = 500;
+        }
+        return response()->json([
+            'status'      => $success ?? true,
+            'message'     => $message ?? 'Student Updated Successfully!',
+            'type'        => 'student',
+            'student' => $student ?? null
+        ], $status ?? 201);       
     }
 
     /**
