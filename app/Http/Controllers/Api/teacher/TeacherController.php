@@ -90,13 +90,26 @@ class TeacherController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Teacher $teacher
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(Teacher $teacher): JsonResponse
     {
-        return 'adil';
-        //
+        $relationships = [];
+            falseToNull(!request()->school)
+            ?? array_push($relationships, 'school');
+            falseToNull(!request()->teachers)
+            ?? array_push($relationships, 'subjects');
+            falseToNull(!request()->address)
+            ?? array_push($relationships, 'address');
+
+        $teacher = Teacher::with($relationships)->find($teacher->id);
+
+        return response()->json([
+            'status'      => $success ?? true,
+            'type'        => 'teacher',
+            'teacher' => $teacher ?? null
+        ], $status ?? 201);
     }
 
     /**

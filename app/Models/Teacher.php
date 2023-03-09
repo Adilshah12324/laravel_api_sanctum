@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static findOrFail(int $id)
  * @method static find(int $id)
+ * @property mixed $id
  */
 class Teacher extends Model
 {
