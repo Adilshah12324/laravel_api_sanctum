@@ -9,6 +9,10 @@ use App\Traits\Relationships\BelongsToManyStudents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static findOrFail(int $id)
+ * @method static find(int $id)
+ */
 class Teacher extends Model
 {
     use BelongsToManyStudents;

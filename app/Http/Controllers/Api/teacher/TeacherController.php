@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api\teacher;
 
+use App\Http\Requests\updateTeacherRequest;
 use Exception;
 use App\Models\Address;
 use App\Models\Teacher;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeacherCollection;
@@ -18,7 +19,7 @@ class TeacherController extends Controller
      *
      * @return TeacherCollection
      */
-    public function index()
+    public function index(): TeacherCollection
     {
         $relationships = [];
         falseToNull(!request()->school)
@@ -34,26 +35,16 @@ class TeacherController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreTeacherRequest $request
+     * @return JsonResponse
      */
-    public function store(StoreTeacherRequest $request)
-    {   
+    public function store(StoreTeacherRequest $request): JsonResponse
+    {
         DB::beginTransaction();
         try
-            {     
+            {
             $address = $request->only('street','city','country');
             $address = Address::create($address);
             $profileImagePath = null;
@@ -77,10 +68,10 @@ class TeacherController extends Controller
             ]);
             $teacher = [
                 'teacher' => $teacher,
-                'address' => $address
+                'address' => $address->all(),
             ];
             DB::commit();
-            
+
             } catch (Exception $e) {
                 $success = false;
                 $message = 'Failed to create teacher (' . $e->getMessage() . ')!';
@@ -93,7 +84,7 @@ class TeacherController extends Controller
             'type'        => 'teacher',
             'teacher' => $teacher ?? null
         ], $status ?? 201);
-        
+
     }
 
     /**
@@ -104,40 +95,74 @@ class TeacherController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
+        return 'adil';
         //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param updateTeacherRequest $request
+     * @param int $id
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(updateTeacherRequest $request, $id): JsonResponse
     {
-        //
+        DB::beginTransaction();
+        try
+        {
+            $addressUpdate = $request->only('street','city','country');
+            $teacher = Teacher::findOrFail($id);
+            $address = $teacher->address()->update($addressUpdate);
+            $teacher->update([
+                'name'          => $request->input('name'),
+                'phone'         => $request->input('phone'),
+                'email'         => $request->input('email'),
+                'age'           => $request->input('age'),
+                'qualification' => $request->input('qualification'),
+                'specialization'=> $request->input('specialization'),
+                'experience'    => $request->input('experience'),
+            ]);
+            $teacher = [
+                'teacher' => $teacher,
+                'address' => $address
+            ];
+            DB::commit();
+
+        } catch (Exception $e) {
+            $success = false;
+            $message = 'Failed to create teacher (' . $e->getMessage() . ')!';
+            $status  = 500;
+        }
+
+        return response()->json([
+            'status'      => $success ?? true,
+            'message'     => $message ?? 'Teacher is updated Successfully!',
+            'type'        => 'teacher',
+            'teacher' => $teacher ?? null
+        ], $status ?? 201);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        $teacher = Teacher::find($id);
+        if (!$teacher){
+            return response()->json([
+                'teacher' => 'Teacher Not Found',
+            ]);
+        }
+        $teacher->delete();
+
+        return response()->json([
+            'status'      => $success ?? true,
+            'message'     => $message ?? 'Teacher deleted Successfully!',
+            'type'        => 'teacher',
+        ], $status ?? 201);
     }
 }

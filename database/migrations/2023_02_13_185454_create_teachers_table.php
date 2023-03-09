@@ -26,8 +26,8 @@ return new class extends Migration
             $table->string('specialization');
             $table->string('experience');
             $table->timestamps();
-            $table->foreign('school_id')->references('id')->on('schools');
-            $table->foreign('address_id')->references('id')->on('addresses');
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
+            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
         });
     }
 
