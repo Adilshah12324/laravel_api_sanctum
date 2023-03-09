@@ -16,4 +16,14 @@ class Student extends Model
     use belongsToManyTeachers;
     use belongsToManySubjects;
     use HasFactory;
+
+    protected $fillable = [
+        'school_id',
+        'address_id',
+        'name',
+        'father_name',
+        'dob',
+        'roll_no',
+        'fees'
+    ];
 }

@@ -22,6 +22,8 @@ class StudentSeeder extends Seeder
                 'school_id' => $faker->numberBetween(1,5),
                 'address_id' => $faker->numberBetween(1,5),
                 'name' => $faker->unique()->name,
+                'father_name' => $faker->unique()->name,
+                'dob' => $faker->unique()->date(),
                 'roll_no' => $faker->randomNumber(4),
                 'fees' => $faker->unique()->randomNumber(4),
             ]);

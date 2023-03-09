@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('school_id');
             $table->unsignedBigInteger('address_id');
             $table->string('name');
+            $table->string('father_name');
+            $table->string('dob');
             $table->string('roll_no');
             $table->string('fees');
             $table->timestamps();
