@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\subject;
 
 use Exception;
 use App\Models\Subject;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SubjectCollection;
 use App\Http\Requests\StoreSubjectRequest;
@@ -30,7 +29,6 @@ class SubjectController extends Controller
         $subjects = Subject::with($relationships)->get();
 
         return new SubjectCollection($subjects);
-
     }
 
     /**
@@ -63,9 +61,23 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Subject $subject)
     {
-        //
+        $relationships = [];
+        falseToNull(!request()->students)
+            ?? array_push($relationships, 'students');
+        falseToNull(!request()->teachers)
+            ?? array_push($relationships, 'teachers');
+            falseToNull(!request()->school)
+            ?? array_push($relationships, 'teachers.school');
+
+        $subject = Subject::with($relationships)->findOrFail($subject->id);
+        
+        return response()->json([
+            'status'      => $success ?? true,
+            'type'        => 'subject',
+            'subject'     => $subject ?? null
+        ], $status ?? 201);
     }
 
     /**
