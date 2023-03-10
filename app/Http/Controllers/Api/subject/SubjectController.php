@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SubjectCollection;
 use App\Http\Requests\StoreSubjectRequest;
+use App\Http\Requests\UpdateSubjectRequest;
 
 class SubjectController extends Controller
 {
@@ -68,26 +69,28 @@ class SubjectController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateSubjectRequest $request, $id)
     {
-        //
+        try{
+            $subject = $request->all();
+            $subject = Subject::findOrFail($id)->update($subject);
+            }catch (Exception $e) {
+                $success = false;
+                $message = 'Failed to update subject (' . $e->getMessage() . ')!';
+                $status  = 500;
+            }
+            return response()->json([
+                'status'      => $success ?? true,
+                'message'     => $message ?? 'Subject Update Successfully!',
+                'type'        => 'subject',
+                'subject'     => $subject ?? null
+            ], $status ?? 201);
     }
 
     /**
@@ -96,8 +99,20 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Subject $subject)
     {
-        //
+        $subject = Subject::findOrFail($subject->id);
+        if(!$subject){
+            return response()->json([
+                'subject' => 'Subject Not Found',
+            ]);
+        }
+        $subject->delete();
+
+        return response()->json([
+            'status'      => $success ?? true,
+            'message'     => $message ?? 'Subject Deleted Successfully!',
+            'type'        => 'subject',
+        ], $status ?? 201);
     }
 }
