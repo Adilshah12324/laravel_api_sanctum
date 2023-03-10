@@ -32,5 +32,5 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::resource('subjects',SubjectController::class);
 });
 
-
+?>
 
