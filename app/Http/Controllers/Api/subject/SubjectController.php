@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api\subject;
 
+use Exception;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SubjectCollection;
+use App\Http\Requests\StoreSubjectRequest;
 
 class SubjectController extends Controller
 {
@@ -31,24 +33,27 @@ class SubjectController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSubjectRequest $request)
     {
-        //
+        try{
+        $subject = $request->all();
+        $subject = Subject::create($subject);
+        }catch (Exception $e) {
+            $success = false;
+            $message = 'Failed to create subject (' . $e->getMessage() . ')!';
+            $status  = 500;
+        }
+        return response()->json([
+            'status'      => $success ?? true,
+            'message'     => $message ?? 'Subject Created Successfully!',
+            'type'        => 'subject',
+            'subject'     => $subject ?? null
+        ], $status ?? 201);
     }
 
     /**

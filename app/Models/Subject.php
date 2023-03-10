@@ -12,4 +12,9 @@ class Subject extends Model
     use BelongsToManyTeachers;
     use BelongsToManyStudents;
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'code',
+    ];
 }
